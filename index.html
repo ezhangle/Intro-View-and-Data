@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>Autodesk View and Data API Quick Start Guide</title>
+        
+        <link rel="stylesheet" href="stylesheets/css/reveal.css">
+        <link href="stylesheets/libs/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="stylesheets/css/theme/white.css">
+        <link href="stylesheets/theme.css" rel="stylesheet">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        
+            <!-- jQuery -->
+        <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
+        <script src="./scripts/libs/jquery/jquery-2.1.1.min.js"></script>
+        
+            <!-- spin.js -->
+        <script src="./scripts/libs/spin/spin.min.js"></script>
+        
+            <!-- Autodesk Viewer (from local) -->
+        <!-- <link rel="stylesheet" href="./stylesheets/libs/adsk/style.css" type="text/css">
+        <script src="./scripts/libs/adsk/viewer3D.min.js"></script>-->
+        
+            <!-- Autodesk Viewer (from server: PROD) -->
+        <link rel="stylesheet" href="https://viewing.api.autodesk.com/viewingservice/v1/viewers/style.css" type="text/css">
+        <script src="https://viewing.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"></script>
+        
+            <!-- Autodesk Viewer (from server: STAGING) -->
+        <!--<link rel="stylesheet" href="https://developer-stg.api.autodesk.com/viewingservice/v1/viewers/style.css" type="text/css">
+        <script src="https://developer-stg.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"></script>-->
+      
+            <!-- our local scripts -->
+        <script src="./scripts/Base64.js"></script>
+        <script src="./scripts/MyAuthToken.js"></script>
+        <script src="./scripts/DebugUtils.js"></script>
+        <script src="./scripts/FileUploader.js"></script>
+    </head>
+    
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <div class="form-buffer">
+                        <img id="img_logo" src="./images/logo_header.png" alt="Autodesk Logo">
+                        <h1>View and Data API</h1>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>What is the View and Data API?</h2>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <span class="fragment">
+                                <h4>Server-Side REST API</h4>
+                                <ul>
+                                    <li>Upload</li>
+                                    <li>Translation</li>
+                                    <li>Storage</li>
+                                    <li>oAuth 2.0</li>
+                                </ul>
+                            </span>    
+                        </div>
+                        <div class="col-xs-6">
+                            <span class="fragment">
+                                <h4>Client-Side JavaScript API</h4>
+                                <ul>
+                                    <li>Viewing - THREE.js</li>
+                                    <li>Embed in Webpage</li>
+                                    <li>Access to objects</li>
+                                </ul>
+                            </span>    
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>The Stack</h2>
+                    <img src="./images/stack.png" alt="Explain the stack">
+                </section>
+
+                <section>
+                    <h2>Server-side Workflow</h2>
+                    <ul>
+                        <li>Register + create app</li>
+                        <li>Get access token</li>
+                        <li>Create bucket</li>
+                        <li>Upload file/object to bucket</li>
+                        <li>Request translation</li>
+                        <li>Access from client</li>
+                    </ul>
+                </section>    
+
+                <section>
+                    <h2>Register + Create App</h2>
+                    <img width="60%" src="./images/sign-up.png">
+                </section>
+
+                <section>
+                    <h2>Register + Create App</h2>
+                    <img width="60%" src="./images/add-app.png">
+                </section>
+
+                <section>
+                        <!--  FORM: Set up a token service -->
+                    <form id="form_getAccessToken">
+                        <div class="form-group">
+                            <h2>Get Access token</h2>
+                                <label for="txt_curlStatement">cURL Statement</label>
+                                <textarea class="form-control" id="txt_curlStatement" rows="1">curl --data "client_id=MY_CONSUMER_KEY&amp;client_secret=MY_CONSUMER_SECRET&amp;grant_type=client_credentials" https://developer.api.autodesk.com/authentication/v1/authenticate --header "Content-Type: application/x-www-form-urlencoded" -k</textarea>
+                            <p>Replace <em>MY_CONSUMER_KEY</em> and <em>MY_CONSUMER_SECRET</em>.</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="eb_authToken">Access Token</label>
+                                    <input name="authToken" id="eb_authToken" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <button id="bn_authenticate" class="btn btn-primary btn-lg" type="submit">Authenticate</button>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 form-group">
+                                <label for="txt_resAuthenticate">Result</label>
+                                <textarea class="form-control" id="txt_resAuthenticate" rows="1" readonly></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <section>
+
+                        <!--  FORM: Create a bucket -->
+                    <form id="form_createBucket">
+                        <div class="form-group">
+                            <h2>Create a Bucket</h2>
+                            <p>"Buckets" are containers for data. Retention policies are:</p>
+                            <ul class="simple">
+                                <li><em>Transient</em>: 24 hours.</li>
+                                <li><em>Temporary</em>: 30 days.</li>
+                                <li><em>Persistent</em>: until deleted.</li>
+                            </ul>
+                            <p>Must be between 3 to 128 characters and contain only lowercase letters, numbers and the symbols . _ -</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="eb_bucketNameCreate">Bucket Name</label>
+                                    <input name="bucketName" id="eb_bucketNameCreate" class="form-control" autofocus pattern="^[-_.a-z0-9]{3,128}$">
+                                </div>
+                                <div class="form-group">
+                                    <label for="pu_bucketPolicy">Retention Policy</label>
+                                    <select name="policy" class="form-control" id="pu_bucketPolicy">
+                                        <option value="1">transient</option>
+                                        <option value="2">temporary</option>
+                                        <option value="3">persistent</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Create Bucket</button>
+                            </div>
+                            <div  id="spn_createBucket" class="col-xs-6 form-group">
+                                <label for="txt_resCreateBucket">Result</label>
+                                <textarea class="form-control" id="txt_resCreateBucket" rows="5" readonly></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <section>
+                        <!--  FORM: Upload File -->
+                    <form id="form_uploadFile">
+                        <div class="form-group">
+                            <h2>Upload File to Bucket</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="eb_bucketNameUpload">Bucket Name</label>
+                                    <input name="bucketName" id="eb_bucketNameUpload" class="form-control" autofocus pattern="^[-_.a-z0-9]{3,128}$">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ui_filePicker">Select File to Upload</label>
+                                    <input class="input-lg" type="file" id="ui_filePicker"/>
+                                </div>
+                                <button class="btn btn-primary btn-lg" id="bn_uplaodFile" type="submit" disabled>Upload File to Bucket</button>
+                            </div>
+                            <div id="spn_uploadFile" class="col-md-6 form-group">
+                                <label for="txt_resUploadFile">Result</label>
+                                <textarea class="form-control" id="txt_resUploadFile" rows="10" readonly></textarea>
+                            </div>
+                        </div>
+                    </form>
+
+                </section>
+
+                <section>
+
+                        <!--  FORM: Set References -->
+                    <form  id="form_setReferences">
+                        <div class="form-group">
+                            <h2>Set References</h2>
+                            <h4>[Optional]</h4>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-xs-6">
+                                <label for="txt_sampleSetRefs">Sample - edit to fit your case</label>
+                                <textarea class="form-control" id="txt_sampleSetRefs" rows="10">
+            {
+                "master" : "urn:adsk.objects:os.object:MYBUCKET/ROOT_FILE.xyz",
+                "dependencies" : [
+                  { "file" : "urn:adsk.objects:os.object:MYBUCKET/LINKED_FILE.xyz",
+                    "metadata" : {
+                        "childPath" : "LINKED_FILE.xyz",
+                        "parentPath" : "ROOT_FILE.xyz"
+                    }
+                  }
+                ]
+            }                   </textarea>
+                                <br/>
+                                <button class="btn btn-primary btn-lg" type="submit">Set References</button>
+                            </div>
+                            <div id="spn_setRefs" class="col-xs-6 form-group">
+                                <label for="txt_resSetRefs">Result</label>
+                                <textarea class="form-control" id="txt_resSetRefs" rows="10" readonly></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <section>
+
+                        <!--  FORM: Encode the ID from the upload -->
+                    <form id="form_urnToEncode">
+                        <div class="form-group">
+                            <h2>Encode URN</h2>
+                            <p>Once the file has been successfully uploaded, we should have recieved back an id in the form of a URN.  It should look something like: "urn:adsk.objects:oss.object:mybucket/myfile.ext"</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="eb_urnToEncode">URN to Encode</label>
+                                    <input name="urn" id="eb_urnToEncode" class="form-control">
+                                </div>
+                                <button class="btn btn-primary" type="submit">Encode Base64</button>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="txt_resEncode64">Result</label>
+                                <textarea class="form-control" id="txt_resEncode64" rows="10" readonly></textarea>
+                            </div>
+                        </div>
+                    </form>
+
+                </section>
+
+                <section>
+
+                        <!--  FORM: Translate the file -->
+                    <form id="form_translateFile">
+                        <div class="form-group">
+                            <h2>Translate the File</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="eb_urnOfFile">Encoded URN of file to translate</label>
+                                    <input name="urn" id="eb_urnOfFile" class="form-control">
+                                </div>
+                                <button class="btn btn-primary btn-lg" type="submit">Translate</button>
+                            </div>
+                            <div id="spn_translateFile" class="col-md-6 form-group">
+                                <label for="txt_resTranslate">Result</label>
+                                <textarea class="form-control" id="txt_resTranslate" rows="10" readonly></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <section>
+
+                        <!--  FORM: Get the details of the translated file -->
+                    <form id="form_viewTranslateStatus">
+                        <div class="form-group">
+                            <h2>View Translation Status</h2>
+                            <p>See what the current status of your translation is</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="eb_urnOfFileViewStatus">URN of file</label>
+                                    <input name="urn" id="eb_urnOfFileViewStatus" class="form-control">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="cb_viewStatusAll" type="checkbox"> All info
+                                        </label>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Get Status</button>
+                            </div>
+                            <div id="spn_viewTranslationStatus" class="col-md-6 form-group">
+                                <label for="txt_resViewTranslateStatus">Result</label>
+                                <textarea class="form-control" id="txt_resViewTranslateStatus" rows="10" readonly></textarea>
+                            </div>
+                        </div>
+                    </form>
+
+                </section>
+
+                <section>
+
+                        <!--  FORM: View the translated file -->
+                    <form id="form_fileToView">
+                        <div class="form-group">
+                            <h2>View Your File!</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="eb_urnToView">URN of file to view</label>
+                                    <input name="urn" id="eb_urnToView" class="form-control">
+                                </div>
+                                <button class="btn btn-primary" type="submit">View it</button>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="pu_viewToLoad">3D / 2D Sheets</label>
+                                <select id="pu_viewToLoad" class="form-control" name="viewToLoad" disabled>
+                                    <!-- Options filled in by function in LoadModel.js -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group"></div>  <!-- just need a little space -->
+                        <div class="row">
+                            <div class="col-md-8 form-group" id="viewer">          <!-- Viewer goes here -->        
+                                <!-- Upon the viewer initalizaiton, it will append a div to the above div to insert the viewer.  It
+                                    will use 100% width and height so that it will fill up whatever the above div's dimensions are. 
+                                    NOTE: I had to set height in theme.css for this object or bootstrap would set height to 1px -->
+                            </div>
+                        </div>
+                    </form>
+
+                </section>
+            </div>
+        </div>
+
+        <script src="scripts/reveal.js"></script>
+        <script src="scripts/FormSteps.js"></script>
+        <script src="scripts/ViewIt.js"></script>
+        <script>
+            var fileControl = document.getElementById("ui_filePicker");
+            fileControl.addEventListener("change", startRead);
+        </script>
+		<script>
+			Reveal.initialize(
+            );
+		</script>
+        
+        
+    </body>
+</html>
