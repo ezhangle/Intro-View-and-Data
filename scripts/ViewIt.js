@@ -83,7 +83,7 @@ function initializeViewer() {
 
     var viewerElement = document.getElementById("viewer");  // placeholder in HTML to stick the viewer
         
-    _viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerElement, {});
+    _viewer = new Autodesk.Viewing.Viewer3D(viewerElement, {});
    
     var retCode = _viewer.initialize();
     if (retCode !== 0) {
