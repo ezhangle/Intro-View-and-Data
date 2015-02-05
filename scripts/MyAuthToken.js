@@ -134,4 +134,3 @@ MyAuthToken.prototype.get = function()
     
     return fullRetVal;  // so test function can display raw result
 };
-

@@ -47,9 +47,21 @@
                         <h1>View and Data API</h1>
                     </div>
                 </section>
+                
+                <section>
+                    <h2>What does it do?</h2>
+                    <span class="fragment">
+                        <img src="./images/inventor-suspension-desktop.png" alt="Desktop" width="700"> 
+                    </span>
+                </section>
+                
+                <section>
+                    <img src="./images/inventor-viewer.png" alt="Desktop" width="700"><br>
+                    <a href="http://viewer.autodesk.io/node/gallery/#/viewer?id=54464d43af600b5c0a87254a" target="_blank">See it live</a>
+                </section>
 
                 <section>
-                    <h2>What is the View and Data API?</h2>
+                    <h2>The Stack</h2>
                     <div class="row">
                         <div class="col-xs-6">
                             <span class="fragment">
@@ -58,7 +70,6 @@
                                     <li>Upload</li>
                                     <li>Translation</li>
                                     <li>Storage</li>
-                                    <li>oAuth 2.0</li>
                                 </ul>
                             </span>    
                         </div>
@@ -331,15 +342,25 @@
                         </div>
                         <div class="form-group"></div>  <!-- just need a little space -->
                         <div class="row">
-                            <div style="max-height:400px;" class="col-xs-12 form-group" id="viewer">          <!-- Viewer goes here -->        
+                            <div class="reset-this">
+                                <div style="max-height:400px;" class="col-xs-12 form-group" id="viewer">          <!-- Viewer goes here -->        
                                 <!-- Upon the viewer initalizaiton, it will append a div to the above div to insert the viewer.  It
                                     will use 100% width and height so that it will fill up whatever the above div's dimensions are. 
                                     NOTE: I had to set height in theme.css for this object or bootstrap would set height to 1px -->
+                                </div>
                             </div>
                         </div>
                     </form>
 
                 </section>
+                
+                <section>
+                    <h2>On your page</h2>
+                    <p>Put the viewer on your page</p>
+                    <pre><code class="html" data-trim>&lt;link rel="stylesheet" href="https://developer.api.autodesk.com/viewingservice/v1/viewers/style.css" type="text/css"&gt;
+&lt;script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"&gt;&lt;script&gt;</code></pre>
+                </section>
+                
             </div>
         </div>
 
