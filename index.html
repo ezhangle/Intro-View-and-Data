@@ -49,7 +49,14 @@
                 </section>
                 
                 <section>
-                    <h2>What does it do?</h2>
+                    <h2>About Me</h2>
+                    <p>Shiya Luo</p>
+                    <p>Developer Evangelist @ Autodesk</p>
+                    <i class="fa fa-twitter fa-fw"></i> @ShiyaLuo
+                </section>
+                
+                <section>
+                    <h2>What does View and Data API do?</h2>
                     <span class="fragment">
                         <img src="./images/inventor-suspension-desktop.png" alt="Desktop" width="700"> 
                     </span>
@@ -89,6 +96,11 @@
                 <section>
                     <h2>The Stack</h2>
                     <img src="./images/stack.png" alt="Explain the stack">
+                </section>
+                
+                <section>
+                    <h1>Server-Side</h1>
+                    <h2>REST API</h2>
                 </section>
 
                 <section>
@@ -355,10 +367,61 @@
                 </section>
                 
                 <section>
+                    <h1>Client-Side</h1>
+                    <h2>JavaScript API</h2>
+                </section>
+                
+                <section>
                     <h2>On your page</h2>
-                    <p>Put the viewer on your page</p>
+                    <p>Reference the following JavaScript Libraries:</p>
                     <pre><code class="html" data-trim>&lt;link rel="stylesheet" href="https://developer.api.autodesk.com/viewingservice/v1/viewers/style.css" type="text/css"&gt;
 &lt;script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"&gt;&lt;script&gt;</code></pre>
+                </section>
+                
+                <section>
+                    <h2>Put the viewer on your page</h2>
+                    <p>Create a div with id "viewer"</p>
+                    <pre><code data-trim>&lt;div id="viewer"&gt;&lt;/div&gt;</code></pre>
+                </section>
+                
+                <section>
+                    <h2>Initialize with JavaScript</h2>
+                    <pre><code data-trim class="javascript">function initialize() {
+    var options = {
+        'document' : 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bXlidWNrZXQvc2t5c2NwcjEuM2Rz',
+        'env':'AutodeskProduction',
+        'getAccessToken': getToken,
+        'refreshToken': getToken,
+        };
+    var viewerElement = document.getElementById('viewer');
+    var viewer = new Autodesk.Viewing.Viewer3D(viewerElement, {});
+
+    Autodesk.Viewing.Initializer(options,function() {
+        viewer.initialize();
+        loadDocument(viewer, options.document);
+    });
+}</code></pre>
+                </section>
+                
+                <section>
+                    <h2>token</h2>
+                    <p>getToken(): we wrote this method so you don't have to do it</p>
+                    <pre><code data-trim class="javascript">function getToken() {
+    var xmlHttp = null;
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", "http://still-spire-1606.herokuapp.com/api/token", false );
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}</code></pre>
+                </section>
+                                
+                <section>
+                    <h2>developer.autodesk.com</h2>
+                    <ul>
+                        <li>Doucumentation</li>
+                        <li>Sample apps</li>
+                        <li>I'm here to help!</li>
+                    </ul>
                 </section>
                 
             </div>
