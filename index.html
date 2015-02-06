@@ -405,22 +405,31 @@
                 
                 <section>
                     <h2>token</h2>
-                    <p>getToken(): we wrote this method so you don't have to do it</p>
-                    <pre><code data-trim class="javascript">function getToken() {
-    var xmlHttp = null;
-    xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", "http://still-spire-1606.herokuapp.com/api/token", false );
-    xmlHttp.send( null );
-    return xmlHttp.responseText;
+                        <pre><code data-trim class="javascript">function getToken() {
+        return "GX6OONHlQ9qoVaCSmBqJvqPFUT5i";
 }</code></pre>
+                    <span class="fragment">
+                        <p>We wrote an access token API so you don't have to do it</p>
+                        <pre><code data-trim class="javascript">function getToken() {
+        var xmlHttp = null;
+        xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", "http://still-spire-1606.herokuapp.com/api/token", false );
+        xmlHttp.send( null );
+        return xmlHttp.responseText;
+    }</code></pre></span>
                 </section>
                                 
                 <section>
-                    <h2>developer.autodesk.com</h2>
+                    <h2>Resources</h2>
                     <ul>
-                        <li>Doucumentation</li>
-                        <li>Sample apps</li>
-                        <li>I'm here to help!</li>
+                        <li>I didn't cover all the APIs</li>
+                        <li>developer.autodesk.com</li>
+                        <ul>
+                            <li>Sample apps</li>
+                            <li>Documentation</li>
+                        </ul>
+                        <li>These slides are on shiya.github.io/Intro-View-and-Data</li>
+                        <li>Ask me when you need help</li>
                     </ul>
                 </section>
                 
