@@ -426,10 +426,39 @@
                 </section>
                 
                 <section>
+                    <p>loadDocument</p>
+                    <pre><code>function loadDocument(viewer, documentId) {
+    // Find the first 3d geometry and load that.
+    Autodesk.Viewing.Document.load(documentId, function(doc) {
+    var geometryItems = [];
+    geometryItems = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {
+        'type' : 'geometry',
+        'role' : '3d'
+    }, true);
+
+    if (geometryItems.length > 0) {
+        viewer.load(doc.getViewablePath(geometryItems[0]));
+    }
+ }, function(errorMsg) {// onErrorCallback
+    alert("Load Error: " + errorMsg);
+    });
+}</code></pre>
+                
+                </section>
+                
+                <section>
                     <h2>token</h2>
                         <pre><code data-trim class="javascript">function getToken() {
         return "GX6OONHlQ9qoVaCSmBqJvqPFUT5i";
 }</code></pre>
+<<<<<<< HEAD
+=======
+                </section>
+                
+                <section>
+                    <p>The minimal sample code can be found at <a href="https://github.com/Developer-Autodesk/View-and-Data-Barebone" target="_blank">https://github.com/Developer-Autodesk/View-and-Data-Barebone</a></p>
+                    <p>It's less than 60 lines of JavaScript + HTML</p>
+>>>>>>> 25fbb3cf06be0f6e79f4ea2912ea82958bc0fc28
                 </section>
                 
                 <section>
