@@ -3,41 +3,41 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+
         <title>Autodesk View and Data API Quick Start Guide</title>
-        
+
         <link rel="stylesheet" href="stylesheets/css/reveal.css">
         <link href="stylesheets/libs/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="stylesheets/css/theme/white.css">
         <link href="stylesheets/theme.css" rel="stylesheet">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-        
+
             <!-- jQuery -->
         <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
         <script src="./scripts/libs/jquery/jquery-2.1.1.min.js"></script>
-        
+
             <!-- spin.js -->
         <script src="./scripts/libs/spin/spin.min.js"></script>
-        
+
             <!-- Autodesk Viewer (from local) -->
         <!-- <link rel="stylesheet" href="./stylesheets/libs/adsk/style.css" type="text/css">
         <script src="./scripts/libs/adsk/viewer3D.min.js"></script>-->
-        
+
             <!-- Autodesk Viewer (from server: PROD) -->
         <link rel="stylesheet" href="https://viewing.api.autodesk.com/viewingservice/v1/viewers/style.css" type="text/css">
         <script src="https://viewing.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"></script>
-        
+
             <!-- Autodesk Viewer (from server: STAGING) -->
         <!--<link rel="stylesheet" href="https://developer-stg.api.autodesk.com/viewingservice/v1/viewers/style.css" type="text/css">
         <script src="https://developer-stg.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"></script>-->
-      
+
             <!-- our local scripts -->
         <script src="./scripts/Base64.js"></script>
         <script src="./scripts/MyAuthToken.js"></script>
         <script src="./scripts/DebugUtils.js"></script>
         <script src="./scripts/FileUploader.js"></script>
     </head>
-    
+
     <body>
         <div class="reveal">
             <div class="slides">
@@ -47,21 +47,22 @@
                         <h1>View and Data API</h1>
                     </div>
                 </section>
-                
+
                 <section>
                     <h2>About Me</h2>
-                    <p>Shiya Luo</p>
+                    <p>Jeremy Tammik</p>
                     <p>Developer Evangelist @ Autodesk</p>
-                    <i class="fa fa-twitter fa-fw"></i> @ShiyaLuo
+                    <i class="fa fa-twitter fa-fw"></i> @jeremytammik
+                    <a href="http://thebuildingcoder.typepad.com">The Building Coder</a>
                 </section>
-                
+
                 <section>
                     <h2>What does View and Data API do?</h2>
                     <span class="fragment">
-                        <img src="./images/inventor-suspension-desktop.png" alt="Desktop" width="700"> 
+                        <img src="./images/inventor-suspension-desktop.png" alt="Desktop" width="700">
                     </span>
                 </section>
-                
+
                 <section>
                     <img src="./images/inventor-viewer.png" alt="Desktop" width="700"><br>
                     <a href="http://viewer.autodesk.io/node/gallery/#/viewer?id=54464d43af600b5c0a87254a" target="_blank">See it live</a>
@@ -78,7 +79,7 @@
                                     <li>Translation</li>
                                     <li>Storage</li>
                                 </ul>
-                            </span>    
+                            </span>
                         </div>
                         <div class="col-xs-6">
                             <span class="fragment">
@@ -88,7 +89,7 @@
                                     <li>Embed in Webpage</li>
                                     <li>Access to objects</li>
                                 </ul>
-                            </span>    
+                            </span>
                         </div>
                     </div>
                 </section>
@@ -97,7 +98,7 @@
                     <h2>The Stack</h2>
                     <img src="./images/stack.png" alt="Explain the stack">
                 </section>
-                
+
                 <section>
                     <h1>Server-Side</h1>
                     <h2>REST API</h2>
@@ -113,7 +114,7 @@
                         <li>Request translation</li>
                         <li>Access from client</li>
                     </ul>
-                </section>    
+                </section>
 
                 <section>
                     <h2>Register + Create App</h2>
@@ -355,9 +356,9 @@
                         <div class="form-group"></div>  <!-- just need a little space -->
                         <div class="row">
                             <div class="reset-this">
-                                <div style="max-height:400px;" class="col-xs-12 form-group" id="viewer">          <!-- Viewer goes here -->        
+                                <div style="max-height:400px;" class="col-xs-12 form-group" id="viewer">          <!-- Viewer goes here -->
                                 <!-- Upon the viewer initalizaiton, it will append a div to the above div to insert the viewer.  It
-                                    will use 100% width and height so that it will fill up whatever the above div's dimensions are. 
+                                    will use 100% width and height so that it will fill up whatever the above div's dimensions are.
                                     NOTE: I had to set height in theme.css for this object or bootstrap would set height to 1px -->
                                 </div>
                             </div>
@@ -365,25 +366,25 @@
                     </form>
 
                 </section>
-                
+
                 <section>
                     <h1>Client-Side</h1>
                     <h2>JavaScript API</h2>
                 </section>
-                
+
                 <section>
                     <h2>On your page</h2>
                     <p>Reference the following JavaScript Libraries:</p>
                     <pre><code class="html" data-trim>&lt;link rel="stylesheet" href="https://developer.api.autodesk.com/viewingservice/v1/viewers/style.css" type="text/css"&gt;
 &lt;script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"&gt;&lt;script&gt;</code></pre>
                 </section>
-                
+
                 <section>
                     <h2>Put the viewer on your page</h2>
                     <p>Create a div with id "viewer"</p>
                     <pre><code data-trim>&lt;div id="viewer"&gt;&lt;/div&gt;</code></pre>
                 </section>
-                
+
                 <section>
                     <h2>Initialize with JavaScript</h2>
                     <pre><code data-trim class="javascript">function initialize() {
@@ -402,7 +403,7 @@
     });
 }</code></pre>
                 </section>
-                
+
                 <section>
                     <h2>token</h2>
                         <pre><code data-trim class="javascript">function getToken() {
@@ -418,7 +419,7 @@
         return xmlHttp.responseText;
     }</code></pre></span>
                 </section>
-                                
+
                 <section>
                     <h2>Resources</h2>
                     <ul>
@@ -428,11 +429,11 @@
                             <li>Sample apps</li>
                             <li>Documentation</li>
                         </ul>
-                        <li>These slides are on shiya.github.io/Intro-View-and-Data</li>
-                        <li>Ask me when you need help</li>
+                        <li>These slides are on jeremytammik.github.io/Intro-View-and-Data</li>
+                        <li>Ask me if you need any help</li>
                     </ul>
                 </section>
-                
+
             </div>
         </div>
 
@@ -448,6 +449,6 @@
 		</script>
         <script src="scripts/FormSteps.js"></script>
         <script src="scripts/ViewIt.js"></script>
-        
+
     </body>
 </html>
