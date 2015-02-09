@@ -376,7 +376,7 @@
                     <h2>On your page</h2>
                     <p>Reference the following JavaScript Libraries:</p>
                     <pre><code class="html" data-trim>&lt;link rel="stylesheet" href="https://viewing.api.autodesk.com/viewingservice/v1/viewers/style.css" type="text/css"&gt;
-&lt;script src="https://viewing.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"&gt;&lt;script&gt;</code></pre>
+&lt;script src="https://viewing.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"&gt;&lt;/script&gt;</code></pre>
                 </section>
 
                 <section>
@@ -430,15 +430,11 @@
                         <pre><code data-trim class="javascript">function getToken() {
         return "GX6OONHlQ9qoVaCSmBqJvqPFUT5i";
 }</code></pre>
-                    <span class="fragment">
-                        <p>We wrote an access token API so you don't have to do it</p>
-                        <pre><code data-trim class="javascript">function getToken() {
-        var xmlHttp = null;
-        xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", "http://still-spire-1606.herokuapp.com/api/token", false );
-        xmlHttp.send( null );
-        return xmlHttp.responseText;
-    }</code></pre></span>
+                </section>
+                
+                <section>
+                    <p>The minimal sample code can be found at <a href="https://github.com/Developer-Autodesk/View-and-Data-Barebone" target="_blank">https://github.com/Developer-Autodesk/View-and-Data-Barebone</a></p>
+                    <p>It's less than 60 lines of JavaScript + HTML</p>
                 </section>
 
                 <section>
